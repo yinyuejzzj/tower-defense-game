@@ -1,0 +1,23 @@
+# 依赖与构建产物
+node_modules/
+dist/
+.output/
+.nitro/
+.vercel/
+.tanstack/
+.node_modules.lock
+*.log
+.DS_Store
+Thumbs.db
+
+# 本地工具、私有笔记与旧预览截图（不公开）
+.workbuddy/
+artifacts/
+screenshots/
+startup.sh
+.verify-*
+
+# 平台脚手架文档：仅保留运行必需的构建开关
+AGENTS.md
+.grok/*
+!.grok/app-env.json

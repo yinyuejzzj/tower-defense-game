@@ -1,0 +1,5 @@
+# 统一按 LF 入库；Windows 批处理检出时必须是 CRLF
+* text=auto
+*.bat text eol=crlf
+*.png binary
+*.jpg binary

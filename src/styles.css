@@ -1,0 +1,745 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Noto Sans SC", "WenQuanYi Zen Hei", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-display: "Noto Serif SC", "WenQuanYi Zen Hei", "Songti SC", serif;
+  --color-bg: #0c1210;
+  --color-surface: #16211c;
+  --color-surface-2: #22312a;
+  --color-fg: #f4efe4;
+  --color-muted: #a7b5ab;
+  --color-gold: #e4b04a;
+  --color-gold-ink: #2a1c08;
+  --color-ember: #d4653a;
+  --color-frost: #7ec8c3;
+  --color-line: #2c3d34;
+  --color-danger: #d15a4a;
+  --color-ok: #8fbf72;
+  --radius-lg: 1rem;
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+
+  button:disabled {
+    cursor: default;
+  }
+}
+
+.shell {
+  position: relative;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(228, 176, 74, 0.08), transparent 50%),
+    var(--color-bg);
+}
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 0.75rem;
+  padding: 0.55rem 0.8rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+}
+
+.brand small {
+  display: block;
+  margin-top: 0.1rem;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--color-muted);
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.stat,
+.ghost-btn,
+.primary,
+.sell,
+.choice,
+.card {
+  border: 1px solid var(--color-line);
+  background: var(--color-surface-2);
+  color: var(--color-fg);
+  border-radius: 999px;
+}
+
+.stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.75rem;
+  padding: 0 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat strong {
+  font-weight: 700;
+}
+
+.stat.is-low {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.stat svg,
+.ghost-btn svg,
+.primary svg,
+.choice svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+.top-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.ghost-btn,
+.primary,
+.sell,
+.choice {
+  min-height: 2.75rem;
+  padding: 0 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font: inherit;
+}
+
+.ghost-btn[aria-pressed="true"] {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.primary {
+  background: var(--color-gold);
+  color: var(--color-gold-ink);
+  border-color: var(--color-gold);
+  font-weight: 700;
+}
+
+.primary:disabled {
+  opacity: 0.45;
+}
+
+.sell {
+  color: var(--color-danger);
+  border-color: color-mix(in srgb, var(--color-danger) 55%, var(--color-line));
+  width: 100%;
+  border-radius: 0.8rem;
+}
+
+.stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.board {
+  position: relative;
+  flex: 1;
+  min-height: 12rem;
+  background: var(--color-bg);
+}
+
+.board canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.toast {
+  position: absolute;
+  left: 50%;
+  top: 0.8rem;
+  transform: translateX(-50%);
+  z-index: 2;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-fg);
+  border: 1px solid var(--color-ember);
+  pointer-events: none;
+  font-size: 0.92rem;
+}
+
+.dock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 0.7rem 0.8rem 0.85rem;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-line);
+  max-height: 48%;
+  overflow: auto;
+}
+
+.wave-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.86rem;
+}
+
+.preview span {
+  color: var(--color-fg);
+  background: var(--color-surface-2);
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+}
+
+.shop {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.15rem;
+  scroll-snap-type: x mandatory;
+}
+
+.card {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: 8.4rem;
+  min-height: 6.4rem;
+  border-radius: var(--radius-lg);
+  padding: 0.45rem 0.55rem 0.55rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 0.1rem;
+}
+
+.card img {
+  width: 2.6rem;
+  height: 2.6rem;
+  object-fit: contain;
+}
+
+.card.is-on {
+  border-color: var(--color-gold);
+  box-shadow: inset 0 0 0 1px var(--color-gold);
+}
+
+.card.is-poor {
+  opacity: 0.62;
+}
+
+.card-name {
+  font-weight: 700;
+}
+
+.card-cost {
+  color: var(--color-gold);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+}
+
+.card-blurb {
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.inspector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.7rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
+}
+
+.inspector h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.inspector p,
+.hint,
+.veil p {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.statline {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.ranks {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.pip {
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--color-line);
+}
+
+.pip.on {
+  background: var(--color-gold);
+}
+
+.upgrade-row,
+.aim-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.choice {
+  border-radius: 0.75rem;
+  flex: 1;
+}
+
+.choice[aria-pressed="true"] {
+  background: var(--color-gold);
+  color: var(--color-gold-ink);
+  border-color: var(--color-gold);
+}
+
+.hint {
+  font-size: 0.86rem;
+}
+
+.hints {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+}
+
+.veil {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(8, 12, 10, 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.panel {
+  width: min(28rem, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1.25rem 1.2rem 1.15rem;
+  border-radius: 1.15rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+.menu-panel {
+  width: min(34rem, 100%);
+  max-height: min(88dvh, 46rem);
+  overflow-y: auto;
+}
+
+.pick-label {
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--color-muted);
+}
+
+.level-pick {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.level-card,
+.diff-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.12rem;
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+  font: inherit;
+  color: var(--color-fg);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
+  border-radius: 0.8rem;
+}
+
+.level-card strong,
+.diff-btn strong {
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+}
+
+.level-card span,
+.diff-btn span {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  line-height: 1.35;
+}
+
+.level-card em {
+  font-style: normal;
+  font-size: 0.74rem;
+  color: var(--color-gold);
+}
+
+.level-card.is-on,
+.diff-btn.is-on {
+  border-color: var(--color-gold);
+  box-shadow: inset 0 0 0 1px var(--color-gold);
+}
+
+.diff-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.record {
+  font-size: 0.82rem;
+}
+
+.panel h1,
+.panel h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+}
+
+.panel h2 {
+  font-size: 1.7rem;
+}
+
+.end-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem 0.8rem;
+}
+
+.end-stats div {
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.75rem;
+  background: var(--color-surface-2);
+}
+
+.end-stats span {
+  display: block;
+  color: var(--color-muted);
+  font-size: 0.78rem;
+}
+
+.end-stats strong {
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.veil-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pause-pill {
+  color: var(--color-gold);
+  font-size: 0.85rem;
+}
+
+@media (min-width: 960px) {
+  .stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 23rem;
+    min-height: 0;
+  }
+
+  .dock {
+    max-height: none;
+    border-top: 0;
+    border-left: 1px solid var(--color-line);
+  }
+
+  .shop {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: visible;
+  }
+
+  .card {
+    width: auto;
+  }
+}
+
+@media (max-width: 959px) {
+  .hints {
+    display: none;
+  }
+
+  .brand small {
+    display: none;
+  }
+
+  .topbar {
+    flex-wrap: nowrap;
+    gap: 0.35rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .brand {
+    font-size: 1.05rem;
+  }
+
+  .stats {
+    gap: 0.25rem;
+  }
+
+  .stat {
+    min-height: 2.5rem;
+    padding: 0 0.45rem;
+    gap: 0.2rem;
+  }
+
+  .stat span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .ghost-btn {
+    width: 2.75rem;
+    padding: 0;
+    font-size: 0;
+    gap: 0;
+  }
+
+  .ghost-btn svg {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .dock {
+    max-height: none;
+    overflow: visible;
+    gap: 0.4rem;
+    padding: 0.4rem 0.5rem 0.55rem;
+  }
+
+  .card {
+    width: 6.7rem;
+    min-height: 0;
+    padding: 0.35rem 0.45rem 0.4rem;
+  }
+
+  .card img {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .card-blurb {
+    display: none;
+  }
+
+  .inspector {
+    gap: 0.35rem;
+    padding: 0.5rem 0.55rem;
+    max-height: 10.5rem;
+    overflow: auto;
+  }
+
+  .board {
+    min-height: 13rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .diff-row {
+    grid-template-columns: 1fr;
+  }
+
+  .top-actions {
+    flex-wrap: wrap;
+  }
+}
+
+/* ── Procedural tower glyphs, field codex and denser shop ─────────────── */
+.card .glyph {
+  width: 2.6rem;
+  height: 2.6rem;
+  flex: 0 0 auto;
+}
+
+.inspector-note {
+  padding: 0.45rem 0.55rem;
+  border-radius: 0.55rem;
+  border-left: 2px solid var(--color-gold);
+  background: rgba(228, 176, 74, 0.08);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.codex {
+  border: 1px solid var(--color-line);
+  border-radius: 0.8rem;
+  background: var(--color-surface-2);
+  padding: 0.45rem 0.7rem;
+}
+
+.codex summary {
+  cursor: pointer;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  letter-spacing: 0.04em;
+}
+
+.codex-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+}
+
+.codex-lead {
+  margin: 0.15rem 0 0;
+  font-size: 0.76rem;
+  color: var(--color-muted);
+  line-height: 1.4;
+}
+
+.codex-row {
+  padding: 0.4rem 0.55rem;
+  border-radius: 0.55rem;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid var(--color-line);
+}
+
+.codex-row strong {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+}
+
+.codex-row span {
+  margin-left: 0.5rem;
+  font-size: 0.72rem;
+  color: var(--color-gold);
+}
+
+.codex-row p {
+  margin: 0.25rem 0 0;
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  line-height: 1.45;
+}
+
+@media (min-width: 960px) {
+  .shop {
+    flex: 0 0 auto;
+    max-height: 52vh;
+    overflow-y: auto;
+    align-content: start;
+    grid-auto-rows: minmax(6.9rem, auto);
+  }
+
+  .card {
+    min-height: 0;
+    padding: 0.35rem 0.5rem 0.4rem;
+    gap: 0.05rem;
+    overflow: hidden;
+  }
+
+  .card img,
+  .card .glyph {
+    width: 1.95rem;
+    height: 1.95rem;
+  }
+
+  .card-name {
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+
+  .card-cost {
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .card-blurb {
+    font-size: 0.7rem;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .veil {
+    backdrop-filter: none;
+  }
+}
